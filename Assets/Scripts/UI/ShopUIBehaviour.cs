@@ -4,13 +4,30 @@ using UnityEngine;
 
 public class ShopUIBehaviour : MonoBehaviour
 {
+    //UI shop item prefab
     public GameObject ItemPrefab;
+
+    //UI shop wrapper
     public GameObject ShopContents;
+
+    //the shop being open
+    public GameObject Shop;
+
+    public GameObject Player;
+    public PlayerWardrobe PlayerWardrobe;
+
+
     public ItemDatabase ItemDB;
+
+
     public bool IsOpen;
     Animator _uiAnimator;
-    
+
+
+    List<GameObject> ListedItems;
+
     private void Awake() {
+        ListedItems = new List<GameObject>();
         _uiAnimator = gameObject.GetComponent<Animator>();
     }
     // Start is called before the first frame update
@@ -47,18 +64,31 @@ public class ShopUIBehaviour : MonoBehaviour
     }
 
     //Populates the list of items
-    public void InitializeItemList(List<ItemData.EItemID> ItemList)  {
-  
+    public void InitializeItemList(GameObject Shop, List<ItemData.EItemID> ItemList)  {
 
-        foreach(ItemData.EItemID item in ItemList)   {
+        //reference from the opening shop
+        this.Shop = Shop;
 
-            //get itemprefab from the database
-             GameObject _createdShopItem = Instantiate(ItemPrefab);
-             _createdShopItem.transform.SetParent(ShopContents.transform);
+        
+        for (int i = 0; i < ItemList.Count; i++) {
 
+                switch (ItemList[i])
+                {
+                    case ItemData.EItemID.TopHat:
+                        GameObject _createdShopItem = Instantiate(ItemPrefab);
 
+                        _createdShopItem.transform.SetParent(ShopContents.transform);
+                        _createdShopItem.transform.localScale = Vector3.one;
+                        _createdShopItem.GetComponent<ShopItemBehaviour>().SetProprieties(gameObject, ItemData.EItemID.TopHat, i, ItemDB.GetItemBasePrice(ItemData.EItemID.TopHat));
+                         ListedItems.Add(_createdShopItem);
+
+                    break;
+
+                }
+              
+            
+            
         }
-
         
 
 
@@ -67,10 +97,28 @@ public class ShopUIBehaviour : MonoBehaviour
     //Empties the list of items
     public void CleanList()
     {
+        ListedItems.Clear();
         for (int i = 0; i < ShopContents.transform.childCount; i++)
         {
+            
             Destroy(ShopContents.transform.GetChild(i).gameObject);
         }
+
+
+    }
+
+    public void BuyItem(GameObject Item)  {
+
+        PlayerWardrobe.AddItem(Item.GetComponent<ShopItemBehaviour>().ItemID);
+        Shop.GetComponent<ShopBehaviour>().RemoveItem(Item.GetComponent<ShopItemBehaviour>().ItemIndex);
+        ListedItems.Remove(Item);
+
+        for (int i = 0; i < ListedItems.Count; i++)   {
+            ListedItems[i].GetComponent<ShopItemBehaviour>().ItemIndex = i;
+        }
+
+        Destroy(Item);
+      
 
 
     }

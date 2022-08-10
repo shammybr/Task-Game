@@ -22,13 +22,21 @@ public class ItemDatabase : MonoBehaviour
     public GameObject GetItemPrefab(ItemData.EItemID ItemID)   {
         GameObject item = null; 
         switch(ItemID)  {
-            case ItemData.EItemID.TopHat:
-               item = ItemDB[0];
-                Debug.Log(ItemDB[0].name);
-                break;
+            case ItemData.EItemID.TopHat:      item = ItemDB[0];         break;
 
         }
 
         return item;
+    }
+
+    public int GetItemBasePrice(ItemData.EItemID ItemID) {
+        int price = 0;
+        switch (ItemID)
+        {
+            case ItemData.EItemID.TopHat:       price = 200;             break;
+
+        }
+
+        return price;
     }
 }

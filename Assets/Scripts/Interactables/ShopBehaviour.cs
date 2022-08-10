@@ -40,12 +40,16 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             else  {
                 ShopUIBehaviour.ShowMenu();
                 //refresh shop item list
-                ShopUIBehaviour.InitializeItemList(Inventory.ItemList);
+                ShopUIBehaviour.InitializeItemList(gameObject,Inventory.ItemList);
             }
 
         }
         
     }
 
+    //remove item from shop's inventory
+    public void RemoveItem(int ItemIndex)   {
+        Inventory.ItemList.RemoveAt(ItemIndex);
+    }
 
 }

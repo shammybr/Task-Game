@@ -120,7 +120,6 @@ public class PlayerController : MonoBehaviour
             else
             {
                 //move player to wall bounds
-                Debug.Log(transform.position);
                 transform.position = new Vector3(transform.position.x , verticalHit.collider.bounds.center.y + (verticalHit.collider.bounds.size.y / 2 * _verticalSign) + (_collisionBox.size.y / 2 * _verticalSign) + (0.1f * _verticalSign), 0);
 
             }

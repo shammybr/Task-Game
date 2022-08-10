@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 260083610786279160}
+  - component: {fileID: 3786183240992268515}
   m_Layer: 5
   m_Name: ShopItem
   m_TagString: Untagged
@@ -39,6 +40,22 @@ RectTransform:
   m_AnchoredPosition: {x: 137.56, y: -41.39028}
   m_SizeDelta: {x: 275.12, y: 82.7806}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3786183240992268515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260083610786279163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb1d6f407657b34e87b2c2ffcfd0ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UIShop: {fileID: 0}
+  PriceText: {fileID: 5236095542688363267}
+  ItemIndex: 0
+  ItemPrice: 0
 --- !u!1 &260083611965620007
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +177,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 260083611965620002}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3786183240992268515}
+        m_TargetAssemblyTypeName: ShopItemBehaviour, Assembly-CSharp
+        m_MethodName: BuyItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &260083612062266896
 GameObject:
   m_ObjectHideFlags: 0
