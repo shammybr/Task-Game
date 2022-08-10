@@ -14,14 +14,21 @@ public class PlayerController : MonoBehaviour
     public float Speed;
 
     int _collisionLayer;
-
+    int _interactableLayer;
 
     Animator _animator;
-    private void Awake()
-    {
+  
+    public enum EFacingDirection { Up, Down, Left, Right };
+
+    //direction the player is facing
+    EFacingDirection _facingDirection;
+
+    private void Awake() {
         _animator = gameObject.GetComponent<Animator>();
        _collisionLayer = LayerMask.GetMask("Collision");
+        _interactableLayer = LayerMask.GetMask("Interactable");
        _collisionBox = gameObject.GetComponent<BoxCollider2D>();
+       _animator = gameObject.GetComponent<Animator>();
     }
     void Start()
     {
@@ -33,10 +40,12 @@ public class PlayerController : MonoBehaviour
 
         Movement();
 
+        //if space is pressed (interact button)
+        if (Input.GetButtonDown("Interact"))
+            Interact();
     }
         
-    void Movement()
-    {
+    void Movement(){
         //store horizontal input
         _horizontalInput = Input.GetAxisRaw("Horizontal");
 
@@ -70,10 +79,19 @@ public class PlayerController : MonoBehaviour
         }
         //checks for collision with 2D raycasts
 
+        if(_horizontalInput == 0.0f && _verticalInput == 0.0f)      {
+            _animator.SetBool("Stopped", true);
+          
+        }
+        else
+        {
+            _animator.SetBool("Stopped", false);
+          
+        }
 
         if (_horizontalInput != 0)
         {
-            RaycastHit2D horizontalHit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, new Vector2(-_horizontalSign, 0), Time.deltaTime * Speed + 0.1f, _collisionLayer);
+            RaycastHit2D horizontalHit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, new Vector2(-_horizontalSign, 0), Time.deltaTime * Speed + 0.2f, _collisionLayer);
 
             //if horizontal raycast didn't hit
             if (horizontalHit.collider == null)
@@ -91,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
         if (_verticalInput != 0)
         {
-            RaycastHit2D verticalHit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, new Vector2(0 , -_verticalSign), Time.deltaTime * Speed + 0.1f, _collisionLayer);
+            RaycastHit2D verticalHit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, new Vector2(0 , -_verticalSign), Time.deltaTime * Speed + 0.2f, _collisionLayer);
 
             //if vertical raycast didn't hit
             if (verticalHit.collider == null)
@@ -102,12 +120,68 @@ public class PlayerController : MonoBehaviour
             else
             {
                 //move player to wall bounds
+                Debug.Log(transform.position);
                 transform.position = new Vector3(transform.position.x , verticalHit.collider.bounds.center.y + (verticalHit.collider.bounds.size.y / 2 * _verticalSign) + (_collisionBox.size.y / 2 * _verticalSign) + (0.1f * _verticalSign), 0);
 
             }
         }
 
 
+
+    }
+
+    //update player direction status
+    public void SetDirection(EFacingDirection direction)
+    {
+
+        _facingDirection = direction;
+
+
+    }
+
+    void Interact() {
+
+        Vector2 _arrayDirection = Vector2.up;
+        
+        //check the direction the player is facing
+        switch (_facingDirection)
+        {
+            case EFacingDirection.Left:
+
+                _arrayDirection = Vector2.left;
+                break;
+
+
+            case EFacingDirection.Right:
+
+                _arrayDirection = Vector2.right;
+                break;
+
+            case EFacingDirection.Up:
+
+                _arrayDirection = Vector2.up;
+                break;
+
+            case EFacingDirection.Down:
+
+                _arrayDirection = Vector2.down;
+                break;
+
+
+
+        }
+
+        //casts an array where there player is facing
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, _arrayDirection, 3.0f, _interactableLayer);
+
+        //if the array hit
+        if (hit.collider != null)
+        {
+            //interact with the object
+            InteractableBehaviour interactable =  hit.collider.gameObject.GetComponent<InteractableBehaviour>();
+            interactable.Interact();
+
+        }
 
     }
 
