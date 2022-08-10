@@ -30,4 +30,22 @@ public class ShopItemBehaviour : MonoBehaviour
 
 
     }
+
+    public void SellItem()
+    {
+
+        if (UIShop != null)
+        {
+            UIShop.GetComponent<ShopUIBehaviour>().SellItem(gameObject);
+        }
+
+    }
+
+    public void PreviewItem()
+    {
+
+
+    }
+
+
 }

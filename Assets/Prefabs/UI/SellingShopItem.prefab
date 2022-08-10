@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 260083610786279160}
   - component: {fileID: 3786183240992268515}
   m_Layer: 5
-  m_Name: ShopItem
+  m_Name: SellingShopItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,6 +56,7 @@ MonoBehaviour:
   PriceText: {fileID: 5236095542688363267}
   ItemIndex: 0
   ItemPrice: 0
+  ItemID: 0
 --- !u!1 &260083611965620007
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +181,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3786183240992268515}
         m_TargetAssemblyTypeName: ShopItemBehaviour, Assembly-CSharp
-        m_MethodName: BuyItem
+        m_MethodName: SellItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -329,9 +330,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Buy
-
-'
+  m_text: Sell
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

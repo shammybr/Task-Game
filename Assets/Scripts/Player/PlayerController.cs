@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Animator HatAnimator;
+
+
     //store player movement input
     float _horizontalInput, _verticalInput, _horizontalSign, _verticalSign;
 
@@ -15,9 +18,10 @@ public class PlayerController : MonoBehaviour
 
     int _collisionLayer;
     int _interactableLayer;
-
+    bool _isRunning;
     Animator _animator;
-  
+
+
     public enum EFacingDirection { Up, Down, Left, Right };
 
     //direction the player is facing
@@ -29,10 +33,17 @@ public class PlayerController : MonoBehaviour
         _interactableLayer = LayerMask.GetMask("Interactable");
        _collisionBox = gameObject.GetComponent<BoxCollider2D>();
        _animator = gameObject.GetComponent<Animator>();
+
+
+      
     }
+
+    //begins with the player facing down
     void Start()
     {
-        
+
+        _animator.Play("Player_IdleDown", 0, 0);
+        _facingDirection = EFacingDirection.Down;
     }
 
     // Update is called once per frame
@@ -55,7 +66,7 @@ public class PlayerController : MonoBehaviour
         //set animator variables
         _animator.SetFloat("HorizontalInput", _horizontalInput);
         _animator.SetFloat("VerticalInput", _verticalInput);
-      
+
 
         //store input direction
         if (_horizontalInput < 0)
@@ -77,18 +88,20 @@ public class PlayerController : MonoBehaviour
         {
             _verticalSign = -1.0f;
         }
-        //checks for collision with 2D raycasts
+      
 
         if(_horizontalInput == 0.0f && _verticalInput == 0.0f)      {
             _animator.SetBool("Stopped", true);
-          
+            _isRunning = false;
         }
         else
         {
             _animator.SetBool("Stopped", false);
-          
+            _isRunning = true;
         }
 
+
+        //checks for collision with 2D raycasts
         if (_horizontalInput != 0)
         {
             RaycastHit2D horizontalHit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, new Vector2(-_horizontalSign, 0), Time.deltaTime * Speed + 0.2f, _collisionLayer);
@@ -129,15 +142,61 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //update player direction status
+    //update player direction status and syncs hat's animation
     public void SetDirection(EFacingDirection direction)
     {
-
+        float time = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         _facingDirection = direction;
+      
+        switch (direction)  {
+            case EFacingDirection.Left:
+                if (_isRunning)
+                    HatAnimator.Play("HatRunLeft", 0 , time);
+                else
+                    HatAnimator.Play("HatIdleLeft", 0, time);
 
+               
+                break;
+
+
+            case EFacingDirection.Up:
+                if (_isRunning)
+                    HatAnimator.Play("HatRunUp", 0, time);
+                else
+                    HatAnimator.Play("HatIdleUp", 0, time);
+
+                break;
+
+
+
+
+
+            case EFacingDirection.Down:
+                if (_isRunning)
+                    HatAnimator.Play("HatRunDown", 0, time);
+                else
+                    HatAnimator.Play("HatIdleDown", 0, time);
+
+
+                break;
+
+
+            case EFacingDirection.Right:
+                if (_isRunning)
+                    HatAnimator.Play("HatRunRight", 0, time);
+                else
+                    HatAnimator.Play("HatIdleRight", 0, time);
+
+
+                break;
+        }
 
     }
+    
+    public void SetHatAnimation(int animation){
+      
 
+    }
     void Interact() {
 
         Vector2 _arrayDirection = Vector2.up;
@@ -148,22 +207,26 @@ public class PlayerController : MonoBehaviour
             case EFacingDirection.Left:
 
                 _arrayDirection = Vector2.left;
+            
                 break;
 
 
             case EFacingDirection.Right:
 
                 _arrayDirection = Vector2.right;
+            
                 break;
 
             case EFacingDirection.Up:
 
                 _arrayDirection = Vector2.up;
+           
                 break;
 
             case EFacingDirection.Down:
 
                 _arrayDirection = Vector2.down;
+            
                 break;
 
 
@@ -171,7 +234,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //casts an array where there player is facing
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, _arrayDirection, 3.0f, _interactableLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, _arrayDirection, 0.5f, _interactableLayer);
 
         //if the array hit
         if (hit.collider != null)

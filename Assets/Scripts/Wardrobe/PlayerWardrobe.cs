@@ -4,36 +4,43 @@ using UnityEngine;
 
 public class PlayerWardrobe : MonoBehaviour
 {
-    public List<ItemData.EItemID> ItemList;
-    
+    public List<ItemData> ItemList;
+    public GameObject Player;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        
+
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    void Update()  {
+
     }
 
-    public void AddItem(ItemData.EItemID Item)
+
+    public ItemData GetItem(int ItemIndex)
+    {
+        return ItemList[ItemIndex];
+
+    }
+
+    //add item to wardrobe
+    public void AddItem(ItemData Item)
     {
         ItemList.Add(Item);
 
 
     }
 
-    public void RemoveItem(int ItemIndex)  {
+    //remove item from wardrobe
+    public void RemoveItem(ItemData Item)  {
 
-        ItemList.RemoveAt(ItemIndex);
+        ItemList.Remove(Item);
     }
 
-    public void EquipItem(int ItemIndex) {
-
-
-
+   public void SetEquipped(int ItemIndex, bool IsEquipped)
+    {
+        ItemList[ItemIndex].SetEquipped(IsEquipped);
     }
 }

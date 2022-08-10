@@ -2,29 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemData : MonoBehaviour
+[System.Serializable]
+public class ItemData
 {
+
     // Start is called before the first frame update
     public EItemID ItemID;
     public Sprite ShopSprite;
+    public string ItemName;
     public int ItemValue;
+    public List<AnimationClip> AnimationClips;
+
+    bool _equipped;
+
+    public ItemData(EItemID ItemID, int Discount, string Name, Sprite ShopSprite, ItemDatabase ItemDB)
+    {
+        this.ItemID = ItemID;
+
+        if (ItemName == null)
+            this.ItemName = ItemDB.ListItemData[(int)ItemID].ItemName;
+        else
+            this.ItemName = Name;
+
+        if (ShopSprite == null)
+            this.ShopSprite = ItemDB.ListItemData[(int)ItemID].ShopSprite;
+        else
+            this.ShopSprite = ShopSprite;
+
+      
+        this.AnimationClips = ItemDB.ListItemData[(int)ItemID].AnimationClips;
+        this.ItemValue = ItemDB.ListItemData[(int)ItemID].ItemValue - Discount;
+     
+    }
 
     public enum EItemID  {
-        TopHat = 0
-
+        NoHat = 0,
+        TopHat = 1
+            
     }
 
-
-
-
-    void Start()
+    public bool IsEquipped()
     {
-        
+        return _equipped;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetEquipped(bool Equipped)
     {
-        
+        _equipped = Equipped;
     }
 }

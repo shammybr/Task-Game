@@ -5,13 +5,17 @@ using UnityEngine;
 public class ShopUIBehaviour : MonoBehaviour
 {
     //UI shop item prefab
-    public GameObject ItemPrefab;
+    public GameObject BuyingItemPrefab;
+    public GameObject SellingItemPrefab;
 
     //UI shop wrapper
     public GameObject ShopContents;
-
+    public GameObject Buttons;
     //the shop being open
     public GameObject Shop;
+
+   
+
 
     public GameObject Player;
     public PlayerWardrobe PlayerWardrobe;
@@ -24,10 +28,12 @@ public class ShopUIBehaviour : MonoBehaviour
     Animator _uiAnimator;
 
 
-    List<GameObject> ListedItems;
+    List<GameObject> _listedItems;
+    List<ItemData> _shopItems;
 
-    private void Awake() {
-        ListedItems = new List<GameObject>();
+    private void Awake()
+    {
+        _listedItems = new List<GameObject>();
         _uiAnimator = gameObject.GetComponent<Animator>();
     }
     // Start is called before the first frame update
@@ -39,12 +45,17 @@ public class ShopUIBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void ShowMenu()
+    public void ShowMenu(GameObject Shop, List<ItemData> ShopItems)
     {
         IsOpen = true;
+
+        this.Shop = Shop;
+        this._shopItems = ShopItems;
+        Buttons.SetActive(true);
+        CleanList();
 
         //put the shop on view
         if (_uiAnimator != null)
@@ -57,69 +68,115 @@ public class ShopUIBehaviour : MonoBehaviour
 
         IsOpen = false;
 
+        Shop = null;
+        _shopItems = null;
+
         //hide shop
-        if(_uiAnimator != null)
-        _uiAnimator.Play("UIAnimationOut");
+        if (_uiAnimator != null)
+            _uiAnimator.Play("UIAnimationOut");
         CleanList();
     }
 
     //Populates the list of items
-    public void InitializeItemList(GameObject Shop, List<ItemData.EItemID> ItemList)  {
+    public void InitializeBuyingItemList()
+    {
 
         //reference from the opening shop
-        this.Shop = Shop;
-
         
-        for (int i = 0; i < ItemList.Count; i++) {
+        Buttons.SetActive(false);
 
-                switch (ItemList[i])
-                {
-                    case ItemData.EItemID.TopHat:
-                        GameObject _createdShopItem = Instantiate(ItemPrefab);
+        for (int i = 0; i < _shopItems.Count; i++)
+        {
 
-                        _createdShopItem.transform.SetParent(ShopContents.transform);
-                        _createdShopItem.transform.localScale = Vector3.one;
-                        _createdShopItem.GetComponent<ShopItemBehaviour>().SetProprieties(gameObject, ItemData.EItemID.TopHat, i, ItemDB.GetItemBasePrice(ItemData.EItemID.TopHat));
-                         ListedItems.Add(_createdShopItem);
+    
+           GameObject _createdShopItem = Instantiate(BuyingItemPrefab);
 
-                    break;
+            _createdShopItem.transform.SetParent(ShopContents.transform);
+            _createdShopItem.transform.localScale = Vector3.one;
+            _createdShopItem.GetComponent<ShopItemBehaviour>().SetProprieties(gameObject, _shopItems[i].ItemID, i, _shopItems[i].ItemValue);
+            _listedItems.Add(_createdShopItem);
 
-                }
-              
-            
-            
+
+
         }
-        
+
 
 
     }
 
+
+    public void InitializeSellingItemList()
+    {
+        Buttons.SetActive(false);
+
+        for (int i = 0; i < PlayerWardrobe.ItemList.Count; i++)
+        {
+
+             GameObject _createdShopItem = Instantiate(SellingItemPrefab);
+
+             _createdShopItem.transform.SetParent(ShopContents.transform);
+             _createdShopItem.transform.localScale = Vector3.one;
+             _createdShopItem.GetComponent<ShopItemBehaviour>().SetProprieties(gameObject, PlayerWardrobe.ItemList[i].ItemID, i, Mathf.CeilToInt(PlayerWardrobe.ItemList[i].ItemValue * 0.9f));
+             _listedItems.Add(_createdShopItem);
+
+    
+
+        }
+
+    }
     //Empties the list of items
     public void CleanList()
     {
-        ListedItems.Clear();
+        _listedItems.Clear();
         for (int i = 0; i < ShopContents.transform.childCount; i++)
         {
-            
+
             Destroy(ShopContents.transform.GetChild(i).gameObject);
         }
 
 
     }
 
-    public void BuyItem(GameObject Item)  {
+    public void BuyItem(GameObject Item)
+    {
 
-        PlayerWardrobe.AddItem(Item.GetComponent<ShopItemBehaviour>().ItemID);
+        PlayerWardrobe.AddItem(Shop.GetComponent<ShopInventory>().GetItemList()[Item.GetComponent<ShopItemBehaviour>().ItemIndex]);
         Shop.GetComponent<ShopBehaviour>().RemoveItem(Item.GetComponent<ShopItemBehaviour>().ItemIndex);
-        ListedItems.Remove(Item);
+        _listedItems.Remove(Item);
 
-        for (int i = 0; i < ListedItems.Count; i++)   {
-            ListedItems[i].GetComponent<ShopItemBehaviour>().ItemIndex = i;
+        for (int i = 0; i < _listedItems.Count; i++)
+        {
+            _listedItems[i].GetComponent<ShopItemBehaviour>().ItemIndex = i;
         }
 
         Destroy(Item);
-      
+
 
 
     }
+
+
+    public void SellItem(GameObject Item)  {
+
+       Shop.GetComponent<ShopBehaviour>().AddItem(PlayerWardrobe.GetItem(Item.GetComponent<ShopItemBehaviour>().ItemIndex));
+       PlayerWardrobe.RemoveItem(PlayerWardrobe.GetItem(Item.GetComponent<ShopItemBehaviour>().ItemIndex));
+        _listedItems.Remove(Item);
+
+        for (int i = 0; i < _listedItems.Count; i++)
+        {
+            _listedItems[i].GetComponent<ShopItemBehaviour>().ItemIndex = i;
+        }
+
+        Destroy(Item);
+
+    }
+
+    //return to shop's main menu
+    public void Return() {
+        CleanList();
+        Buttons.SetActive(true);
+        
+
+    }
+
 }

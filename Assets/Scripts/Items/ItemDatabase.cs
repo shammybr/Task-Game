@@ -5,8 +5,8 @@ using UnityEngine;
 public class ItemDatabase : MonoBehaviour
 {
 
-    public List<GameObject> ItemDB;
-    
+    public List<ItemData> ListItemData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,24 +19,22 @@ public class ItemDatabase : MonoBehaviour
         
     }
 
-    public GameObject GetItemPrefab(ItemData.EItemID ItemID)   {
-        GameObject item = null; 
-        switch(ItemID)  {
-            case ItemData.EItemID.TopHat:      item = ItemDB[0];         break;
-
-        }
-
-        return item;
-    }
 
     public int GetItemBasePrice(ItemData.EItemID ItemID) {
-        int price = 0;
-        switch (ItemID)
-        {
-            case ItemData.EItemID.TopHat:       price = 200;             break;
 
-        }
+        return ListItemData[(int)ItemID].ItemValue;
+    }
 
-        return price;
+    public string GetItemName(ItemData.EItemID ItemID) {
+
+        return ListItemData[(int)ItemID].ItemName;
+
+
+    }
+
+    public List<AnimationClip> GetItemAnimation(ItemData.EItemID ItemID)
+    {
+       
+        return ListItemData[(int)ItemID].AnimationClips;
     }
 }
