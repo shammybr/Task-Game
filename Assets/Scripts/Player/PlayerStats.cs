@@ -32,12 +32,14 @@ public class PlayerStats : MonoBehaviour
         
     }
     
-    public ItemData.EItemID _equippedHatID
+    public ItemData.EItemID GetEquippedHat()
     {
-        get => _equippedHatID;
+        return _equippedHat;
     }
 
     public void EquipHat(ItemData.EItemID HatID)  {
+        Debug.Log("Unequip");
+
         _equippedHat = HatID;
 
         List<AnimationClip> _hatAnimations;
@@ -53,12 +55,17 @@ public class PlayerStats : MonoBehaviour
         _animatorOverrideController["HatRunLeft"] = _hatAnimations[5];
         _animatorOverrideController["HatRunRight"] = _hatAnimations[6];
         _animatorOverrideController["HatRunUp"] = _hatAnimations[7];
-        //refresh sprite
-        EquippedHat.GetComponent<SpriteRenderer>().sprite = null;
+
         
     }
 
-    
+    public void PreviewHat()
+    {
+
+
+
+    }
+
     public void UnequipHat() {
         _equippedHat = ItemData.EItemID.NoHat;
 

@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 2109304548281426239}
   - component: {fileID: 2109304548281426238}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: ItemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -464,7 +464,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2109304548369459218}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 116932741972154215}
+        m_TargetAssemblyTypeName: WardrobeItemBehaviour, Assembly-CSharp
+        m_MethodName: PreviewItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2109304548609073976
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,6 +666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIWardrobe: {fileID: 0}
+  ItemIcon: {fileID: 2109304548281426238}
   ItemName: {fileID: 4510462150605810308}
   ButtonText: {fileID: 7577679396312640186}
   ItemIndex: 0

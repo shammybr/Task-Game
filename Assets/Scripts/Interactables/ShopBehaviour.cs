@@ -71,8 +71,9 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     }
 
     //add item in shop's inventory
-    public void AddItem(ItemData itemID)
+    public void AddItem(ItemData Item)
     {
-        Inventory.GetItemList().Add(itemID);
+        Inventory.GetItemList().Add(Item);
+
     }
 }

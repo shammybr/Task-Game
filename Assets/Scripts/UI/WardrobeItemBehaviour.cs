@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WardrobeItemBehaviour : MonoBehaviour
 {
     public GameObject UIWardrobe;
+    public RawImage ItemIcon;
     public TextMeshProUGUI ItemName;
     public TextMeshProUGUI ButtonText;
     public int ItemIndex;
@@ -14,13 +16,16 @@ public class WardrobeItemBehaviour : MonoBehaviour
     string _itemName;
     bool _isEquipped;
 
-    public void SetProprieties(GameObject UIWardrobe, ItemData.EItemID ItemID, int ItemIndex, string ItemName)
+    public void SetProprieties(GameObject UIWardrobe, ItemData.EItemID ItemID, int ItemIndex, string ItemName, Texture ItemIcon)
     {
         this.UIWardrobe = UIWardrobe;
         this.ItemID = ItemID;
         this.ItemIndex = ItemIndex;
         this._itemName = ItemName;
+        this.ItemIcon.texture = ItemIcon;
         this.ItemName.SetText(ItemName);
+
+
     }
 
     public void PreviewItem()

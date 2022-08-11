@@ -8,14 +8,14 @@ public class ItemData
 
     // Start is called before the first frame update
     public EItemID ItemID;
-    public Sprite ShopSprite;
+    public Texture ShopSprite;
     public string ItemName;
     public int ItemValue;
     public List<AnimationClip> AnimationClips;
 
     bool _equipped;
 
-    public ItemData(EItemID ItemID, int Discount, string Name, Sprite ShopSprite, ItemDatabase ItemDB)
+    public ItemData(EItemID ItemID, int Discount, string Name, Texture ShopSprite, ItemDatabase ItemDB)
     {
         this.ItemID = ItemID;
 
@@ -37,7 +37,8 @@ public class ItemData
 
     public enum EItemID  {
         NoHat = 0,
-        TopHat = 1
+        TopHat = 1,
+        CowboyHat = 2
             
     }
 

@@ -17,6 +17,9 @@ public class WardrobeUIBehaviour : MonoBehaviour
     Animator _wardrobeAnimator;
     List<GameObject> _listedItems;
     int _equippedHatIndex;
+    ItemData.EItemID _equippedHatID;
+    bool _isPreviewing;
+    int _previewingHatIndex;
 
     private void Awake()
     {
@@ -56,6 +59,10 @@ public class WardrobeUIBehaviour : MonoBehaviour
         if (_wardrobeAnimator != null)
             _wardrobeAnimator.Play("WardrobeUIOut");
         CleanList();
+
+        //if previewing item, re equip old hat
+        if (_isPreviewing)
+            UnequipPreview();
     }
 
     public void CleanList()
@@ -79,7 +86,7 @@ public class WardrobeUIBehaviour : MonoBehaviour
 
             _createdShopItem.transform.SetParent(WardrobeContents.transform);
             _createdShopItem.transform.localScale = Vector3.one;
-            _createdShopItem.GetComponent<WardrobeItemBehaviour>().SetProprieties(gameObject, PlayerWardrobe.ItemList[i].ItemID, i, PlayerWardrobe.ItemList[i].ItemName);
+            _createdShopItem.GetComponent<WardrobeItemBehaviour>().SetProprieties(gameObject, PlayerWardrobe.ItemList[i].ItemID, i, PlayerWardrobe.ItemList[i].ItemName, PlayerWardrobe.ItemList[i].ShopSprite);
             if (PlayerWardrobe.ItemList[i].IsEquipped())
             {
                 _createdShopItem.GetComponent<WardrobeItemBehaviour>().SetEquipped(true);
@@ -97,10 +104,25 @@ public class WardrobeUIBehaviour : MonoBehaviour
 
     public void PreviewItem(GameObject Item)
     {
+        _isPreviewing = true;
 
+        //stores what item is being previewed
+        _previewingHatIndex = Item.GetComponent<WardrobeItemBehaviour>().ItemIndex;
+        Player.GetComponent<PlayerStats>().EquipHat(Item.GetComponent<WardrobeItemBehaviour>().ItemID);
 
 
     }
+
+    //reequips original hat
+    public void UnequipPreview()
+    {
+
+        _isPreviewing = false;
+        _previewingHatIndex = -1;
+        Player.GetComponent<PlayerStats>().EquipHat(_equippedHatID);
+    }
+
+
 
     public void EquipItem(GameObject Item)
     {
@@ -108,7 +130,6 @@ public class WardrobeUIBehaviour : MonoBehaviour
         if (_equippedHatIndex >= 0)  {
             //unequip it
             _listedItems[_equippedHatIndex].GetComponent<WardrobeItemBehaviour>().SetEquipped(false);
-            PlayerWardrobe.SetEquipped(_equippedHatIndex, false);
         }
 
         //get equipped hat index
@@ -119,8 +140,11 @@ public class WardrobeUIBehaviour : MonoBehaviour
         Item.GetComponent<WardrobeItemBehaviour>().SetEquipped(true);
 
         //equip  hat
-        Player.GetComponent<PlayerStats>().EquipHat(Item.GetComponent<WardrobeItemBehaviour>().ItemID);
-
+        _isPreviewing = false;
+        _previewingHatIndex = -1;
+        _equippedHatID = Item.GetComponent<WardrobeItemBehaviour>().ItemID;
+        Player.GetComponent<PlayerStats>().EquipHat(_equippedHatID);
+       
 
     }
 
@@ -132,6 +156,7 @@ public class WardrobeUIBehaviour : MonoBehaviour
 
             Player.GetComponent<PlayerStats>().UnequipHat();
             PlayerWardrobe.SetEquipped(Item.GetComponent<WardrobeItemBehaviour>().ItemIndex, false);
+            _equippedHatID = ItemData.EItemID.NoHat;
 
             //refresh the button state and update hatindex
             if (_equippedHatIndex >= 0)  {

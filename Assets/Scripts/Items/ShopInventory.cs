@@ -50,7 +50,7 @@ public class ShopItemData
     public ItemData.EItemID ItemID;
     public string Name;
     public int Discount;
-    public Sprite ShopSprite;
+    public Texture ShopSprite;
 
 
 

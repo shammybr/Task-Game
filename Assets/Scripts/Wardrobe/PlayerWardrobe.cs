@@ -41,6 +41,11 @@ public class PlayerWardrobe : MonoBehaviour
 
    public void SetEquipped(int ItemIndex, bool IsEquipped)
     {
+
+        foreach(ItemData Item in ItemList)   {
+            Item.SetEquipped(false);
+        }
+
         ItemList[ItemIndex].SetEquipped(IsEquipped);
     }
 }
