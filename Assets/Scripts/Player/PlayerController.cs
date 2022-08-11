@@ -100,7 +100,6 @@ public class PlayerController : MonoBehaviour
             _isRunning = true;
         }
 
- 
         //  Debug.DrawRay(_collisionBox.bounds.center + new Vector3(0, _collisionBox.bounds.size.y / 2, 0), new Vector3(0, Time.deltaTime * Speed + 0.2f), Color.red);
 
         //checks for collision with 2D raycasts
@@ -124,7 +123,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-       
+ 
 
         if (_verticalInput != 0)
         {

@@ -10,8 +10,7 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     public GameObject ShopUI;
     public ShopUIBehaviour ShopUIBehaviour;
     public TextMeshPro DialogueMesh;
-    public List<string> Dialogue;
-    public float DialogueSpeed;
+    public float _dialogueSpeed;
 
     bool _isOpen;
 
@@ -49,20 +48,13 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             if (hit.collider == null)     {
                 ShopUIBehaviour.HideMenu();
                 _isOpen = false;
-                CloseDialogue();
             }
         }
 
-        //generates dialogue
         if (_isGeneratingDialogue)    {
 
-            if (_dialogueTiming > 1.0f)
-                DialogueLoop();
-            else
-                _dialogueTiming += Time.deltaTime * DialogueSpeed;
-
+            DialogueLoop();
         }
-
     }
 
     public void Interact()
@@ -75,12 +67,12 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             if (ShopUIBehaviour.IsOpen)   {
                 ShopUIBehaviour.HideMenu();
                 _isOpen = false;
-                CloseDialogue();
+             
             }
             else  {
                 ShopUIBehaviour.ShowMenu(gameObject, Inventory.GetItemList());
                 _isOpen = true;
-                Talk(Dialogue[Random.Range(0, Dialogue.Count)]);
+                Talk("Hello");
             }
 
         }
@@ -112,7 +104,7 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
         if (_dialogueIndex < _dialogueBuffer.Length) { 
 
             DialogueMesh.text += _dialogueBuffer[_dialogueIndex];
-            _dialogueIndex++;
+        _dialogueIndex++;
 
          }
         else    {
@@ -120,15 +112,5 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             _isGeneratingDialogue = false;
             _dialogueIndex = 0;
         }
-
-        _dialogueTiming = 0;
-    }
-
-    public void CloseDialogue()   {
-        DialogueMesh.text = null;
-        _dialogueBuffer = null;
-        _isGeneratingDialogue = false;
-        _dialogueIndex = 0;
-
     }
 }
