@@ -102,17 +102,20 @@ public class PlayerController : MonoBehaviour
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
  
 >>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
-        //  Debug.DrawRay(_collisionBox.bounds.center + new Vector3(0, _collisionBox.bounds.size.y / 2, 0), new Vector3(0, Time.deltaTime * Speed + 0.2f), Color.red);
 =======
->>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
+>>>>>>> parent of 5f4413e (test)
+        //  Debug.DrawRay(_collisionBox.bounds.center + new Vector3(0, _collisionBox.bounds.size.y / 2, 0), new Vector3(0, Time.deltaTime * Speed + 0.2f), Color.red);
 
         //checks for collision with 2D raycasts
+        //the center of the collision box doesn't update instantly after changing the transform position, so we have to
+        //calculate the location of the hitbox ourselves using the offset
         if (_horizontalInput != 0)
         {
-            RaycastHit2D horizontalHit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, new Vector2(-_horizontalSign, 0), Time.deltaTime * Speed + 0.2f, _collisionLayer);
+            RaycastHit2D horizontalHit = Physics2D.BoxCast(transform.position + new Vector3(_collisionBox.offset.x, _collisionBox.offset.y, 0), _collisionBox.bounds.size, 0, new Vector2(-_horizontalSign, 0), Time.deltaTime * Speed + 0.2f, _collisionLayer);
 
             //if horizontal raycast didn't hit
             if (horizontalHit.collider == null)
@@ -123,23 +126,24 @@ public class PlayerController : MonoBehaviour
             else
             {
                 //move player to wall bounds
-                transform.position = new Vector3(horizontalHit.collider.bounds.center.x + (horizontalHit.collider.bounds.size.x / 2 * _horizontalSign) + (_collisionBox.size.x / 2 * _horizontalSign) + (0.1f * _horizontalSign), transform.position.y, 0);
+                transform.position = new Vector3(-_collisionBox.offset.x + horizontalHit.collider.bounds.center.x + (horizontalHit.collider.bounds.size.x / 2 * _horizontalSign) + (_collisionBox.size.x / 2 * _horizontalSign) + (0.1f * _horizontalSign), transform.position.y, 0);
 
             }
         }
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 5f4413e (test)
  
 =======
        
 >>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
 
-=======
->>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
         if (_verticalInput != 0)
         {
-            RaycastHit2D verticalHit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, new Vector2(0 , -_verticalSign), Time.deltaTime * Speed + 0.2f, _collisionLayer);
+            RaycastHit2D verticalHit = Physics2D.BoxCast(transform.position + new Vector3(_collisionBox.offset.x, _collisionBox.offset.y, 0), _collisionBox.bounds.size, 0, new Vector2(0 , -_verticalSign), Time.deltaTime * Speed + 0.2f, _collisionLayer);
 
             //if vertical raycast didn't hit
             if (verticalHit.collider == null)
@@ -150,7 +154,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 //move player to wall bounds
-                transform.position = new Vector3(transform.position.x , verticalHit.collider.bounds.center.y + (verticalHit.collider.bounds.size.y / 2 * _verticalSign) + (_collisionBox.size.y / 2 * _verticalSign) + (0.1f * _verticalSign), 0);
+                transform.position = new Vector3(transform.position.x , -_collisionBox.offset.y + verticalHit.collider.bounds.center.y + (verticalHit.collider.bounds.size.y / 2 * _verticalSign) + (_collisionBox.size.y / 2 * _verticalSign) + (0.1f * _verticalSign), 0);
 
             }
         }

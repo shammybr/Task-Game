@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
@@ -8,18 +9,26 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     public ShopInventory Inventory;
     public GameObject ShopUI;
     public ShopUIBehaviour ShopUIBehaviour;
-<<<<<<< HEAD
     public TextMeshPro DialogueMesh;
 <<<<<<< HEAD
     public float _dialogueSpeed;
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
 =======
     public List<string> Dialogue;
     public float DialogueSpeed;
 >>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
+=======
+>>>>>>> parent of 5f4413e (test)
 
     bool _isOpen;
+
+    string _dialogueBuffer;
+    bool _isGeneratingDialogue;
+    int _dialogueIndex;
+    float _dialogueTiming;
+    
 
     //shop's collision
     BoxCollider2D _collisionBox;
@@ -52,7 +61,6 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
                 CloseDialogue();
             }
         }
-<<<<<<< HEAD
 
         //generates dialogue
         if (_isGeneratingDialogue)    {
@@ -64,11 +72,14 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
 
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
 =======
 
 >>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
+=======
+>>>>>>> parent of 5f4413e (test)
     }
 
     public void Interact()
@@ -83,6 +94,7 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
                 _isOpen = false;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
              
 =======
               
@@ -90,10 +102,14 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
 =======
                 CloseDialogue();
 >>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
+=======
+             
+>>>>>>> parent of 5f4413e (test)
             }
             else  {
                 ShopUIBehaviour.ShowMenu(gameObject, Inventory.GetItemList());
                 _isOpen = true;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                 Talk("Hello");
@@ -103,6 +119,9 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
 =======
                 Talk(Dialogue[Random.Range(0, Dialogue.Count)]);
 >>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
+=======
+                Talk("Hello");
+>>>>>>> parent of 5f4413e (test)
             }
 
         }
@@ -120,7 +139,6 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
         Inventory.GetItemList().Add(Item);
 
     }
-<<<<<<< HEAD
 
 
     public void Talk(string Dialogue)  {
@@ -154,6 +172,4 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
         _dialogueIndex = 0;
 
     }
-=======
->>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
 }

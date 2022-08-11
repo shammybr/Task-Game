@@ -8,13 +8,14 @@ public class ShopInventory : MonoBehaviour
     public List<ShopItemData> ShopItems;
 
 
-    public ItemDatabase ItemDB;
+    ItemDatabase ItemDB;
 
     //actual list of items in inventory
     List<ItemData> _itemList;
 
     void Start()
     {
+        ItemDB = GameObject.Find("ItemDatabase").GetComponent<ItemDatabase>();
         _itemList = new List<ItemData>();
         ConstructItemList();
     }
