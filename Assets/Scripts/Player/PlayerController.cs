@@ -101,6 +101,10 @@ public class PlayerController : MonoBehaviour
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
         //  Debug.DrawRay(_collisionBox.bounds.center + new Vector3(0, _collisionBox.bounds.size.y / 2, 0), new Vector3(0, Time.deltaTime * Speed + 0.2f), Color.red);
 =======
 >>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
@@ -125,7 +129,11 @@ public class PlayerController : MonoBehaviour
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
  
+=======
+       
+>>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
 
 =======
 >>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
