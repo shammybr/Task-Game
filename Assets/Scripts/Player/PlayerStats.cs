@@ -7,11 +7,14 @@ public class PlayerStats : MonoBehaviour
     public int Money;
     public GameObject EquippedHat;
     public GameObject ItemDB;
+    public PlayerHUD PlayerHUD;
+    public List<AudioClip> AudioClips;
 
     AnimatorOverrideController _animatorOverrideController;
     Animator _hatAnimator;
     ItemData.EItemID _equippedHat;
 
+    AudioSource _audioData;
     private void Awake()  {
 
     }
@@ -24,6 +27,8 @@ public class PlayerStats : MonoBehaviour
         _animatorOverrideController.runtimeAnimatorController = _hatAnimator.runtimeAnimatorController;
         _hatAnimator.runtimeAnimatorController = _animatorOverrideController;
         _hatAnimator.runtimeAnimatorController.name = "OverrideController";
+        _audioData = GetComponent<AudioSource>();
+        PlayerHUD.UpdateMoney(Money);
     }
 
     // Update is called once per frame
@@ -56,15 +61,10 @@ public class PlayerStats : MonoBehaviour
         _animatorOverrideController["HatRunRight"] = _hatAnimations[6];
         _animatorOverrideController["HatRunUp"] = _hatAnimations[7];
 
-        
+        _audioData.PlayOneShot(AudioClips[0]);
     }
 
-    public void PreviewHat()
-    {
 
-
-
-    }
 
     public void UnequipHat() {
         _equippedHat = ItemData.EItemID.NoHat;
@@ -82,6 +82,16 @@ public class PlayerStats : MonoBehaviour
         _animatorOverrideController["HatRunUp"] = _hatAnimations[7];
         //refresh sprite
         EquippedHat.GetComponent<SpriteRenderer>().sprite = null;
+        _audioData.PlayOneShot(AudioClips[0]);
+    }
 
+    public void AddMoney(int Amount)  {
+        Money += Amount;
+        PlayerHUD.UpdateMoney(Money);
+    }
+
+    public void SubtractMoney(int Amount)  {
+        Money -= Amount;
+        PlayerHUD.UpdateMoney(Money);
     }
 }

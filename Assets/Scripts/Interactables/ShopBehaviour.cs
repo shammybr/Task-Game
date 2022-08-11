@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
@@ -8,8 +9,16 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     public ShopInventory Inventory;
     public GameObject ShopUI;
     public ShopUIBehaviour ShopUIBehaviour;
+    public TextMeshPro DialogueMesh;
+    public float _dialogueSpeed;
 
     bool _isOpen;
+
+    string _dialogueBuffer;
+    bool _isGeneratingDialogue;
+    int _dialogueIndex;
+    float _dialogueTiming;
+    
 
     //shop's collision
     BoxCollider2D _collisionBox;
@@ -41,6 +50,11 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
                 _isOpen = false;
             }
         }
+
+        if (_isGeneratingDialogue)    {
+
+            DialogueLoop();
+        }
     }
 
     public void Interact()
@@ -53,12 +67,12 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             if (ShopUIBehaviour.IsOpen)   {
                 ShopUIBehaviour.HideMenu();
                 _isOpen = false;
-              
+             
             }
             else  {
                 ShopUIBehaviour.ShowMenu(gameObject, Inventory.GetItemList());
                 _isOpen = true;
-
+                Talk("Hello");
             }
 
         }
@@ -75,5 +89,28 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     {
         Inventory.GetItemList().Add(Item);
 
+    }
+
+
+    public void Talk(string Dialogue)  {
+        DialogueMesh.text = null;
+        _dialogueBuffer = Dialogue;
+        _isGeneratingDialogue = true;
+        _dialogueIndex = 0;
+    }
+
+    public void DialogueLoop()
+    {
+        if (_dialogueIndex < _dialogueBuffer.Length) { 
+
+            DialogueMesh.text += _dialogueBuffer[_dialogueIndex];
+        _dialogueIndex++;
+
+         }
+        else    {
+            _dialogueBuffer = null;
+            _isGeneratingDialogue = false;
+            _dialogueIndex = 0;
+        }
     }
 }
