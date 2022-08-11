@@ -14,19 +14,17 @@ public class ShopUIBehaviour : MonoBehaviour
     //the shop being open
     public GameObject Shop;
 
-
    
-    
+
 
     public GameObject Player;
     public PlayerWardrobe PlayerWardrobe;
 
+
     public ItemDatabase ItemDB;
 
+
     public bool IsOpen;
-
-
-    public List<AudioClip> AudioClips;
     Animator _uiAnimator;
 
 
@@ -38,13 +36,11 @@ public class ShopUIBehaviour : MonoBehaviour
     int _previewingHatIndex;
     bool _isPreviewing;
 
-    AudioSource _audioData;
     private void Awake()
     {
-        _audioData = GetComponent<AudioSource>();
         _shopItems = new List<ItemData>();
         _listedItems = new List<GameObject>();
-        _uiAnimator = GetComponent<Animator>();
+        _uiAnimator = gameObject.GetComponent<Animator>();
     }
     // Start is called before the first frame update
     void Start()
@@ -157,41 +153,33 @@ public class ShopUIBehaviour : MonoBehaviour
 
         int ItemIndex = Item.GetComponent<ShopItemBehaviour>().ItemIndex;
 
-        if (Item.GetComponent<ShopItemBehaviour>().ItemPrice <= Player.GetComponent<PlayerStats>().Money)
+        PlayerWardrobe.AddItem(Shop.GetComponent<ShopInventory>().GetItemList()[ItemIndex]);
+        Shop.GetComponent<ShopBehaviour>().RemoveItem(ItemIndex);
+
+        //if previewing, equip it
+        if (_isPreviewing && _previewingHatIndex == ItemIndex)   
+            EquipItem(Item);
+
+        if (_previewingHatIndex >= 0)
+            //correct for new indexes
+            _previewingHat = _listedItems[_previewingHatIndex];
+        else
+            _previewingHat = null;
+
+
+        _listedItems.Remove(Item);
+        //att the indexes
+        for (int i = 0; i < _listedItems.Count; i++)
         {
-            PlayerWardrobe.AddItem(Shop.GetComponent<ShopInventory>().GetItemList()[ItemIndex]);
-            Shop.GetComponent<ShopBehaviour>().RemoveItem(ItemIndex);
-
-            //if previewing, equip it
-            if (_isPreviewing && _previewingHatIndex == ItemIndex)
-                EquipItem(Item);
-
-            if (_previewingHatIndex >= 0)
-                //correct for new indexes
-                _previewingHat = _listedItems[_previewingHatIndex];
-            else
-                _previewingHat = null;
-
-
-            _listedItems.Remove(Item);
-
-            //att the indexes
-            for (int i = 0; i < _listedItems.Count; i++)
-            {
-                _listedItems[i].GetComponent<ShopItemBehaviour>().ItemIndex = i;
-            }
-
-            if (_previewingHat != null)
-                _previewingHatIndex = _previewingHat.GetComponent<ShopItemBehaviour>().ItemIndex;
-
-            //charge the player
-            Player.GetComponent<PlayerStats>().SubtractMoney(Item.GetComponent<ShopItemBehaviour>().ItemPrice);
-
-
-            Destroy(Item);
-
-            _audioData.PlayOneShot(AudioClips[0]);
+            _listedItems[i].GetComponent<ShopItemBehaviour>().ItemIndex = i;
         }
+
+        if(_previewingHat != null)
+        _previewingHatIndex = _previewingHat.GetComponent<ShopItemBehaviour>().ItemIndex;
+
+        Destroy(Item);
+
+
 
     }
 
@@ -217,11 +205,8 @@ public class ShopUIBehaviour : MonoBehaviour
             _listedItems[i].GetComponent<ShopItemBehaviour>().ItemIndex = i;
         }
 
-
-        Player.GetComponent<PlayerStats>().AddMoney(Item.GetComponent<ShopItemBehaviour>().ItemPrice);
         Destroy(Item);
 
-        _audioData.PlayOneShot(AudioClips[1]);
     }
 
     public void PreviewItem(GameObject Item){
@@ -232,6 +217,7 @@ public class ShopUIBehaviour : MonoBehaviour
         _previewingHatIndex = Item.GetComponent<ShopItemBehaviour>().ItemIndex;
         Player.GetComponent<PlayerStats>().EquipHat(Item.GetComponent<ShopItemBehaviour>().ItemID);
 
+
     }
 
     //reequips original hat
@@ -240,7 +226,6 @@ public class ShopUIBehaviour : MonoBehaviour
         _isPreviewing = false;
         _previewingHatIndex = -1;
         Player.GetComponent<PlayerStats>().EquipHat(_equippedHat);
-       
     }
 
     public void EquipItem(GameObject Item)  {

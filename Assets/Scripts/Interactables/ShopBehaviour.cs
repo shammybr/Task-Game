@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
@@ -9,16 +8,13 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     public ShopInventory Inventory;
     public GameObject ShopUI;
     public ShopUIBehaviour ShopUIBehaviour;
+<<<<<<< HEAD
     public TextMeshPro DialogueMesh;
     public float _dialogueSpeed;
+=======
+>>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
 
     bool _isOpen;
-
-    string _dialogueBuffer;
-    bool _isGeneratingDialogue;
-    int _dialogueIndex;
-    float _dialogueTiming;
-    
 
     //shop's collision
     BoxCollider2D _collisionBox;
@@ -50,11 +46,14 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
                 _isOpen = false;
             }
         }
+<<<<<<< HEAD
 
         if (_isGeneratingDialogue)    {
 
             DialogueLoop();
         }
+=======
+>>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
     }
 
     public void Interact()
@@ -67,12 +66,20 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             if (ShopUIBehaviour.IsOpen)   {
                 ShopUIBehaviour.HideMenu();
                 _isOpen = false;
+<<<<<<< HEAD
              
+=======
+              
+>>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
             }
             else  {
                 ShopUIBehaviour.ShowMenu(gameObject, Inventory.GetItemList());
                 _isOpen = true;
+<<<<<<< HEAD
                 Talk("Hello");
+=======
+
+>>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
             }
 
         }
@@ -90,6 +97,7 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
         Inventory.GetItemList().Add(Item);
 
     }
+<<<<<<< HEAD
 
 
     public void Talk(string Dialogue)  {
@@ -113,4 +121,6 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             _dialogueIndex = 0;
         }
     }
+=======
+>>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
 }
