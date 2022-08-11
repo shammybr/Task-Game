@@ -12,9 +12,9 @@ public class WardrobeBehaviour : MonoBehaviour, InteractableBehaviour
     //wardrobe's collision
     BoxCollider2D _collisionBox;
     int _collisionLayer;
+    float _wardrobeCooldown;
 
-
-    private void Awake()
+private void Awake()
     {
         _collisionBox = gameObject.GetComponent<BoxCollider2D>();
         _collisionLayer = LayerMask.GetMask("Player");
@@ -38,6 +38,11 @@ public class WardrobeBehaviour : MonoBehaviour, InteractableBehaviour
             }
         }
 
+        if(_wardrobeCooldown < 4.0f)
+        {
+            _wardrobeCooldown += Time.deltaTime;
+        }
+
     }
 
 
@@ -46,20 +51,24 @@ public class WardrobeBehaviour : MonoBehaviour, InteractableBehaviour
         //opens menu
         if (WardrobeUIBehaviour != null)
         {
-            //if the shop is open, close it, else open it
-            if (WardrobeUIBehaviour.IsOpen)
+            if (_wardrobeCooldown > 0.4f)
             {
-                WardrobeUIBehaviour.HideMenu();
-                _isOpen = false;
 
+                //if the shop is open, close it, else open it
+                if (WardrobeUIBehaviour.IsOpen)
+                {
+                    WardrobeUIBehaviour.HideMenu();
+                    _isOpen = false;
+
+                }
+                else
+                {
+                    WardrobeUIBehaviour.ShowMenu();
+                    _isOpen = true;
+
+                }
+                _wardrobeCooldown = 0.0f;
             }
-            else
-            {
-                WardrobeUIBehaviour.ShowMenu();
-                _isOpen = true;
-
-            }
-
         }
 
 

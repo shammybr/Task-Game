@@ -100,14 +100,6 @@ public class PlayerController : MonoBehaviour
             _isRunning = true;
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
- 
->>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
-=======
->>>>>>> parent of 5f4413e (test)
         //  Debug.DrawRay(_collisionBox.bounds.center + new Vector3(0, _collisionBox.bounds.size.y / 2, 0), new Vector3(0, Time.deltaTime * Speed + 0.2f), Color.red);
 
         //checks for collision with 2D raycasts
@@ -131,15 +123,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 5f4413e (test)
  
-=======
-       
->>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
 
         if (_verticalInput != 0)
         {

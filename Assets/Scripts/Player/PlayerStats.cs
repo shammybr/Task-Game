@@ -8,13 +8,14 @@ public class PlayerStats : MonoBehaviour
     public GameObject EquippedHat;
     public GameObject ItemDB;
     public PlayerHUD PlayerHUD;
+    public AudioSource _audioData;
     public List<AudioClip> AudioClips;
 
     AnimatorOverrideController _animatorOverrideController;
     Animator _hatAnimator;
     ItemData.EItemID _equippedHat;
 
-    AudioSource _audioData;
+  
     private void Awake()  {
 
     }
@@ -27,7 +28,7 @@ public class PlayerStats : MonoBehaviour
         _animatorOverrideController.runtimeAnimatorController = _hatAnimator.runtimeAnimatorController;
         _hatAnimator.runtimeAnimatorController = _animatorOverrideController;
         _hatAnimator.runtimeAnimatorController.name = "OverrideController";
-        _audioData = GetComponent<AudioSource>();
+     
         PlayerHUD.UpdateMoney(Money);
     }
 

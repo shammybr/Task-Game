@@ -11,6 +11,7 @@ public class WardrobeUIBehaviour : MonoBehaviour
     public ItemDatabase ItemDB;
     public PlayerWardrobe PlayerWardrobe;
     public bool IsOpen;
+    public AudioSource _audioData;
     public List<AudioClip> AudioClips;
 
     List<ItemData.EItemID> _wardrobeItems;
@@ -20,13 +21,12 @@ public class WardrobeUIBehaviour : MonoBehaviour
     ItemData.EItemID _equippedHatID;
     bool _isPreviewing;
     int _previewingHatIndex;
-    AudioSource _audioData;
+  
 
     private void Awake()
     {
         _listedItems = new List<GameObject>();
         _wardrobeAnimator = GetComponent<Animator>();
-        _audioData = GetComponent<AudioSource>();
         _equippedHatIndex = -1;
     }
 
@@ -48,6 +48,7 @@ public class WardrobeUIBehaviour : MonoBehaviour
             _wardrobeAnimator.Play("WardrobeUIIn");
 
         InitializeHatItemList();
+        _equippedHatID = Player.GetComponent<PlayerStats>().GetEquippedHat();
 
         _audioData.PlayOneShot(AudioClips[0]);
     }

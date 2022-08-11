@@ -10,17 +10,8 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     public GameObject ShopUI;
     public ShopUIBehaviour ShopUIBehaviour;
     public TextMeshPro DialogueMesh;
-<<<<<<< HEAD
-    public float _dialogueSpeed;
-<<<<<<< HEAD
-=======
->>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
-=======
-    public List<string> Dialogue;
     public float DialogueSpeed;
->>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
-=======
->>>>>>> parent of 5f4413e (test)
+    public List<string> DialogueList;
 
     bool _isOpen;
 
@@ -28,7 +19,7 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     bool _isGeneratingDialogue;
     int _dialogueIndex;
     float _dialogueTiming;
-    
+    float _shopCooldown;
 
     //shop's collision
     BoxCollider2D _collisionBox;
@@ -47,39 +38,37 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         //if the shop is open, keep checking if player is within bounds
-        if (_isOpen)   {
+        if (_isOpen)    {
 
             RaycastHit2D hit = Physics2D.BoxCast(_collisionBox.bounds.center, _collisionBox.bounds.size, 0, Vector2.up, 0.0f, _collisionLayer);
 
             //if not, close it
-            if (hit.collider == null)     {
+            if (hit.collider == null)
+            {
                 ShopUIBehaviour.HideMenu();
                 _isOpen = false;
                 CloseDialogue();
             }
         }
 
-        //generates dialogue
-        if (_isGeneratingDialogue)    {
+        if (_isGeneratingDialogue){
+            if (_dialogueTiming > 1.0f) {
 
-            if (_dialogueTiming > 1.0f)
                 DialogueLoop();
-            else
-                _dialogueTiming += Time.deltaTime * DialogueSpeed;
+                _dialogueTiming = 0.0f;
+            }
+            else  {
 
+                _dialogueTiming += DialogueSpeed * Time.deltaTime;
+            }
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
-=======
 
->>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
-=======
->>>>>>> parent of 5f4413e (test)
+        if (_shopCooldown < 0.4f)  {
+            _shopCooldown += Time.deltaTime;
+        }
+
     }
 
     public void Interact()
@@ -88,40 +77,23 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
         //opens menu
         if (ShopUIBehaviour != null)
         {
-            //if the shop is open, close it, else open it
-            if (ShopUIBehaviour.IsOpen)   {
-                ShopUIBehaviour.HideMenu();
-                _isOpen = false;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-             
-=======
-              
->>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
-=======
-                CloseDialogue();
->>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
-=======
-             
->>>>>>> parent of 5f4413e (test)
-            }
-            else  {
-                ShopUIBehaviour.ShowMenu(gameObject, Inventory.GetItemList());
-                _isOpen = true;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                Talk("Hello");
-=======
+            if (_shopCooldown >= 0.4f)
+            {
+                //if the shop is open, close it, else open it
+                if (ShopUIBehaviour.IsOpen)
+                {
+                    ShopUIBehaviour.HideMenu();
+                    _isOpen = false;
+                    CloseDialogue();
+                }
+                else
+                {
+                    ShopUIBehaviour.ShowMenu(gameObject, Inventory.GetItemList());
+                    _isOpen = true;
+                    Talk(DialogueList[Random.Range(0, DialogueList.Count)]);
+                }
 
->>>>>>> parent of 587d3a5 (Added Standalone Game and fixed version)
-=======
-                Talk(Dialogue[Random.Range(0, Dialogue.Count)]);
->>>>>>> parent of 2fd967f (Merge branch 'master' of https://github.com/shammybr/Task-Game)
-=======
-                Talk("Hello");
->>>>>>> parent of 5f4413e (test)
+                _shopCooldown = 0.0f;
             }
 
         }
@@ -153,7 +125,7 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
         if (_dialogueIndex < _dialogueBuffer.Length) { 
 
             DialogueMesh.text += _dialogueBuffer[_dialogueIndex];
-            _dialogueIndex++;
+        _dialogueIndex++;
 
          }
         else    {
@@ -161,11 +133,11 @@ public class ShopBehaviour : MonoBehaviour, InteractableBehaviour
             _isGeneratingDialogue = false;
             _dialogueIndex = 0;
         }
-
-        _dialogueTiming = 0;
     }
 
-    public void CloseDialogue()   {
+    public void CloseDialogue()
+    {
+
         DialogueMesh.text = null;
         _dialogueBuffer = null;
         _isGeneratingDialogue = false;

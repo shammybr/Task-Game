@@ -13,10 +13,10 @@ public class ShopUIBehaviour : MonoBehaviour
     public GameObject Buttons;
     //the shop being open
     public GameObject Shop;
+    public AudioSource _audioData;
 
 
-   
-    
+
 
     public GameObject Player;
     public PlayerWardrobe PlayerWardrobe;
@@ -38,10 +38,9 @@ public class ShopUIBehaviour : MonoBehaviour
     int _previewingHatIndex;
     bool _isPreviewing;
 
-    AudioSource _audioData;
+    
     private void Awake()
     {
-        _audioData = GetComponent<AudioSource>();
         _shopItems = new List<ItemData>();
         _listedItems = new List<GameObject>();
         _uiAnimator = GetComponent<Animator>();
@@ -244,9 +243,10 @@ public class ShopUIBehaviour : MonoBehaviour
     }
 
     public void EquipItem(GameObject Item)  {
- 
-        Player.GetComponent<PlayerStats>().EquipHat(Item.GetComponent<ShopItemBehaviour>().ItemID);
+        ItemData.EItemID ItemID = Item.GetComponent<ShopItemBehaviour>().ItemID;
+        Player.GetComponent<PlayerStats>().EquipHat(ItemID);
         PlayerWardrobe.SetEquipped(PlayerWardrobe.ItemList.Count - 1, true);
+        _equippedHat = ItemID;
         _isPreviewing = false;
         _previewingHatIndex = -1;
 
